@@ -13,9 +13,25 @@ This package is in active development. Some block types and advanced features ma
 
 ## Installation
 
-```bash
+::: code-group
+
+```bash [npm]
 npm install @templatical/import-beefree
 ```
+
+```bash [pnpm]
+pnpm add @templatical/import-beefree
+```
+
+```bash [yarn]
+yarn add @templatical/import-beefree
+```
+
+```bash [bun]
+bun add @templatical/import-beefree
+```
+
+:::
 
 ### Without a build step (CDN)
 
@@ -53,6 +69,15 @@ console.log(report);
 The function returns an `ImportResult` with:
 - `content` — the converted `TemplateContent` ready for the editor
 - `report` — a conversion report with the status of each block (`converted`, `approximated`, `html-fallback`, or `skipped`)
+
+| Status | Meaning |
+|---|---|
+| `converted` | Mapped to a Templatical block with no loss of fidelity. |
+| `approximated` | Mapped, with a clamp or flatten — `note` states what changed. |
+| `html-fallback` | No block equivalent; original markup is an `HtmlBlock`. |
+| `skipped` | No output (forms, and anything the converter refuses). |
+
+The JSON BeeFree's editor persists (`page.rows`) is the input. A compiled HTML export is a different envelope — use [`@templatical/import-html`](/guide/migration-from-html).
 
 ## Block Mapping
 
