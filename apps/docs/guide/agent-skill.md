@@ -36,6 +36,8 @@ If your agent doesn't pick the skill up afterwards, check that it is enabled in 
 - **Diagnose** an integration that misbehaves, against a table of verified traps.
 - **Answer a question** about the SDK by fetching this documentation site directly.
 
+The mechanical steps — validate, render, import, live preview — are [`@templatical/template-tools`](/api/template-tools). The skill drives that CLI; you can run the same commands from a shell with no agent.
+
 ::: tip Prefer a hosted experience?
 An in-editor AI chat, tuned prompts, and a hosted MCP server are part of the [Templatical Cloud](/cloud/) tier. This skill is the open, self-hosted path — bring your own agent, keep full control.
 :::
@@ -97,4 +99,16 @@ Layer your own context on top and the agent uses it instead of generic defaults 
 
 ### Custom blocks are never generated from a prompt
 
-This is the one exception. Custom blocks are consumer-registered runtime extensions — the skill has no way to know what one does, so it never invents one from a prompt. See [Custom Blocks](/guide/custom-blocks) for how to register your own.
+Custom blocks are consumer-registered runtime extensions — the skill has no way to know what one does, so it never invents one from a prompt. See [Custom Blocks](/guide/custom-blocks) for how to register your own.
+
+### Never emit `countdown`
+
+`countdown` needs Cloud's server-side animated GIF; the OSS renderer cannot produce it. If asked for a countdown, say so and offer a static stand-in — a title or paragraph with the date, or an "X days to go" line.
+
+### Prefer native blocks
+
+Reach for `html` only as a last resort — raw HTML is not visually editable afterward.
+
+### Match `settings.locale` to the copy
+
+`settings.locale` becomes `<html lang>`. Set it to the language of the generated copy; do not default German copy to `"en"`. For `ar`/`he`/`fa`/`ur`/… also set `direction: "rtl"` (or omit it and those locales resolve as RTL).

@@ -36,6 +36,8 @@ Falls Ihr Agent den Skill danach nicht aufgreift, prüfen Sie, ob er in der Skil
 - **Diagnostizieren** Sie eine Integration, die nicht wie erwartet funktioniert, anhand einer Tabelle verifizierter Fallstricke.
 - **Beantworten Sie eine Frage** zur SDK, indem diese Dokumentationsseite direkt abgerufen wird.
 
+Die mechanischen Schritte — validieren, rendern, importieren, Live-Vorschau — sind [`@templatical/template-tools`](/de/api/template-tools). Der Skill steuert diese CLI; dieselben Befehle laufen ohne Agenten aus einer Shell.
+
 ::: tip Lieber eine gehostete Lösung?
 Ein KI-Chat direkt im Editor, feinabgestimmte Prompts und ein gehosteter MCP-Server sind Teil des [Templatical-Cloud](/de/cloud/)-Tarifs. Dieser Skill ist der offene, selbst gehostete Weg — bringen Sie Ihren eigenen Agenten mit und behalten Sie die volle Kontrolle.
 :::
@@ -97,4 +99,16 @@ Ergänzen Sie Ihren eigenen Kontext, und der Agent verwendet ihn anstelle generi
 
 ### Benutzerdefinierte Blöcke werden nie aus einem Prompt erzeugt
 
-Das ist die einzige Ausnahme. Benutzerdefinierte Blöcke sind zur Laufzeit registrierte Erweiterungen des Konsumenten — der Skill kann nicht wissen, was ein solcher Block tut, und erzeugt ihn deshalb nie aus einem Prompt. Wie Sie einen eigenen registrieren, steht unter [Benutzerdefinierte Blöcke](/de/guide/custom-blocks).
+Benutzerdefinierte Blöcke sind zur Laufzeit registrierte Erweiterungen des Konsumenten — der Skill kann nicht wissen, was ein solcher Block tut, und erzeugt ihn deshalb nie aus einem Prompt. Wie Sie einen eigenen registrieren, steht unter [Benutzerdefinierte Blöcke](/de/guide/custom-blocks).
+
+### Nie `countdown` ausgeben
+
+`countdown` braucht das serverseitige animierte GIF von Cloud; der OSS-Renderer kann es nicht erzeugen. Bei einer Countdown-Anfrage das sagen und einen statischen Ersatz anbieten — Titel oder Absatz mit dem Datum, oder eine Zeile „Noch X Tage“.
+
+### Native Blöcke bevorzugen
+
+`html` nur als letzte Option — rohes HTML lässt sich danach nicht mehr visuell bearbeiten.
+
+### `settings.locale` an den Text anpassen
+
+`settings.locale` wird zu `<html lang>`. Auf die Sprache des erzeugten Texts setzen; deutschen Text nicht auf `"en"` defaulten. Für `ar`/`he`/`fa`/`ur`/… zusätzlich `direction: "rtl"` setzen (oder weglassen — diese Locales gelten als RTL).

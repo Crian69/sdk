@@ -7,9 +7,25 @@ description: Get the Templatical email editor running in under 5 minutes.
 
 ## 1. Install packages
 
-```bash
+::: code-group
+
+```bash [npm]
 npm install @templatical/editor @templatical/renderer
 ```
+
+```bash [pnpm]
+pnpm add @templatical/editor @templatical/renderer
+```
+
+```bash [yarn]
+yarn add @templatical/editor @templatical/renderer
+```
+
+```bash [bun]
+bun add @templatical/editor @templatical/renderer
+```
+
+:::
 
 ## 2. Mount the editor
 
@@ -59,7 +75,62 @@ npm install @templatical/editor @templatical/renderer
 </html>
 ```
 
-Your backend receives both the JSON (store it to let users edit later) and the MJML (compile to HTML with any [MJML library](https://mjml.io) and send).
+Your backend receives both the JSON (store it to let users edit later) and the MJML. `toMjml()` does not produce HTML.
+
+## 3. Compile MJML to HTML
+
+On the server, compile the MJML you just posted with any [MJML library](https://mjml.io) — Node, PHP, Python, Ruby, and others. [How Rendering Works](/getting-started/how-rendering-works) lists them. The Node package is `mjml`:
+
+::: code-group
+
+```bash [npm]
+npm install mjml
+```
+
+```bash [pnpm]
+pnpm add mjml
+```
+
+```bash [yarn]
+yarn add mjml
+```
+
+```bash [bun]
+bun add mjml
+```
+
+:::
+
+```ts
+import mjml2html from "mjml";
+
+const { html } = mjml2html(mjml);
+// html is ready to send
+```
+
+From a saved JSON file, without mounting the editor (also needs `mjml`):
+
+::: code-group
+
+```bash [npm]
+npx -y @templatical/template-tools render template.json --format html -o email.html
+```
+
+```bash [pnpm]
+pnpm dlx @templatical/template-tools render template.json --format html -o email.html
+```
+
+```bash [yarn]
+yarn dlx @templatical/template-tools render template.json --format html -o email.html
+```
+
+```bash [bun]
+bunx @templatical/template-tools render template.json --format html -o email.html
+```
+
+:::
+
+See [Template Tools](/api/template-tools).
 
 ::: info Shadow DOM by default
 The editor mounts inside a Shadow DOM, so host page CSS cannot cascade into editor elements. Use a `<div>` — or any [shadow-host-eligible element](/api/editor#container-element-requirements) — as the container; elements like `<table>`, `<form>`, or `<input>` cannot host a shadow root.
@@ -69,6 +140,8 @@ Pass `shadowDom: false` to opt out if you need an unusual container, target edit
 
 ## Next steps
 
-- [How Rendering Works](/getting-started/how-rendering-works) -- understand the JSON → MJML pipeline.
-- [Blocks](/guide/blocks) -- reference for all 14 block types.
-- [Renderer API](/api/renderer-typescript) -- full `renderToMjml()` reference.
+- [Starting points](/getting-started/paths) — embed, backend, prompt, or JSON → HTML.
+- [Embedding](/getting-started/embedding) — container rules, stacking, and what breaks host CSS isolation.
+- [Connect your backend](/backend/) — save, versions, comments, saved blocks, media, test email, render.
+- [Template Tools](/api/template-tools) — validate, render, import, and live-preview from a CLI or script.
+- [How Rendering Works](/getting-started/how-rendering-works) — JSON → MJML → HTML, and what to store.

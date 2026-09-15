@@ -3,7 +3,7 @@ import { defineConfig, type DefaultTheme } from "vitepress";
 import { copyMarkdownSources } from "../scripts/build-agent-surface.mjs";
 
 const enNav: DefaultTheme.NavItem[] = [
-  { text: "Guide", link: "/getting-started/installation" },
+  { text: "Guide", link: "/getting-started/quick-start" },
   { text: "API", link: "/api/editor" },
   { text: "Quality", link: "/quality/" },
   { text: "Cloud", link: "/cloud/" },
@@ -83,10 +83,18 @@ const enSidebar: DefaultTheme.SidebarMulti = {
   ],
   "/": [
     {
+      text: "Start here",
+      items: [
+        { text: "Starting points", link: "/getting-started/paths" },
+        { text: "Author features", link: "/getting-started/author-features" },
+        { text: "Hosted builders", link: "/getting-started/hosted-builders" },
+      ],
+    },
+    {
       text: "Getting Started",
       items: [
-        { text: "Installation", link: "/getting-started/installation" },
         { text: "Quick Start", link: "/getting-started/quick-start" },
+        { text: "Installation", link: "/getting-started/installation" },
         { text: "Embedding", link: "/getting-started/embedding" },
         {
           text: "How Rendering Works",
@@ -187,7 +195,7 @@ const enSidebar: DefaultTheme.SidebarMulti = {
 };
 
 const deNav: DefaultTheme.NavItem[] = [
-  { text: "Anleitung", link: "/de/getting-started/installation" },
+  { text: "Anleitung", link: "/de/getting-started/quick-start" },
   { text: "API", link: "/de/api/editor" },
   { text: "Qualität", link: "/de/quality/" },
   { text: "Cloud", link: "/de/cloud/" },
@@ -273,10 +281,24 @@ const deSidebar: DefaultTheme.SidebarMulti = {
   ],
   "/de/": [
     {
+      text: "Einstieg",
+      items: [
+        { text: "Einstiegspunkte", link: "/de/getting-started/paths" },
+        {
+          text: "Funktionen für Autoren",
+          link: "/de/getting-started/author-features",
+        },
+        {
+          text: "Gehostete Builder",
+          link: "/de/getting-started/hosted-builders",
+        },
+      ],
+    },
+    {
       text: "Erste Schritte",
       items: [
-        { text: "Installation", link: "/de/getting-started/installation" },
         { text: "Schnellstart", link: "/de/getting-started/quick-start" },
+        { text: "Installation", link: "/de/getting-started/installation" },
         { text: "Einbetten", link: "/de/getting-started/embedding" },
         {
           text: "So funktioniert das Rendering",
@@ -442,7 +464,7 @@ export default defineConfig({
       {
         property: "og:description",
         content:
-          "Production-ready drag-and-drop email editor. 13 block types, merge tags, custom blocks, dark mode, and client-side export.",
+          "Production-ready drag-and-drop email editor. Merge tags, custom blocks, dark mode, and MJML output.",
       },
     ],
     ["meta", { property: "og:type", content: "website" }],
@@ -467,7 +489,7 @@ export default defineConfig({
       {
         name: "twitter:description",
         content:
-          "Production-ready drag-and-drop email editor. 13 block types, merge tags, custom blocks, dark mode, and client-side export.",
+          "Production-ready drag-and-drop email editor. Merge tags, custom blocks, dark mode, and MJML output.",
       },
     ],
     [
