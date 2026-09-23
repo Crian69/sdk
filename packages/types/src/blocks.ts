@@ -10,6 +10,41 @@ export interface BlockStyles {
   backgroundColor?: string;
 }
 
+export type BorderStyle = "solid" | "dashed" | "dotted";
+
+/**
+ * A uniform border — the same width, style and color on all four sides.
+ * Only elements MJML can border natively carry one: sections, images and
+ * buttons.
+ */
+export interface BorderValue {
+  /** Width in px. `0` means no border. */
+  width: number;
+  style: BorderStyle;
+  color: string;
+}
+
+/**
+ * Convert a border to a CSS `border` shorthand like `"1px solid #cccccc"`.
+ * Returns `null` when the border is absent or its width is not a positive
+ * number, so callers emit nothing rather than a `0px` border.
+ *
+ * The editor canvas and the renderer both go through this, so the two can't
+ * format a border differently.
+ */
+export function toBorderCss(border: BorderValue | undefined): string | null {
+  if (
+    !border ||
+    typeof border.width !== "number" ||
+    !Number.isFinite(border.width) ||
+    border.width <= 0
+  ) {
+    return null;
+  }
+
+  return `${border.width}px ${border.style} ${border.color}`;
+}
+
 export interface BlockVisibility {
   desktop: boolean;
   mobile: boolean;
@@ -56,6 +91,8 @@ export interface SectionBlock extends BaseBlock {
   stackOnMobile?: boolean;
   /** Corner radius in px. Omitted/0 = square corners. */
   borderRadius?: number;
+  /** Border around the section box. Omitted or width 0 = no border. */
+  border?: BorderValue;
   /** Optional outer frame (rendered as an `mj-wrapper` around the section). */
   wrapper?: SectionWrapper;
 }
@@ -139,6 +176,8 @@ export interface ImageBlock extends BaseBlock {
    * and portrait layouts are built.
    */
   borderRadius?: number;
+  /** Border around the image itself. Omitted or width 0 = no border. */
+  border?: BorderValue;
   linkUrl?: string;
   linkOpenInNewTab?: boolean;
   placeholderUrl?: string;
@@ -153,6 +192,11 @@ export interface ButtonBlock extends BaseBlock {
   backgroundColor: string;
   textColor: string;
   borderRadius: number;
+  /**
+   * Border around the button itself. Omitted or width 0 = no border. With a
+   * transparent `backgroundColor` this gives an outline ("ghost") button.
+   */
+  border?: BorderValue;
   fontSize: number;
   buttonPadding: SpacingValue;
   fontFamily?: string;

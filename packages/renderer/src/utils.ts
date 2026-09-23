@@ -13,6 +13,10 @@
  * https://documentation.mjml.io/
  */
 
+import type { BorderValue } from "@templatical/types";
+import { toBorderCss } from "@templatical/types";
+import { escapeCssValue } from "./escape";
+
 /**
  * Where the MJML element accepts a background-color attribute.
  * - `native`: the element has its own `background-color` (mj-section, mj-button).
@@ -55,4 +59,24 @@ export function heightAttr(height: number | undefined): string {
   }
 
   return ` height="${height}px"`;
+}
+
+/**
+ * Render the `border` attribute for the MJML elements that accept one natively
+ * (`mj-section`, `mj-image`, `mj-button`). Returns an empty string when there
+ * is no border or its width is not positive, so templates without a border
+ * render exactly as before.
+ *
+ * MJML copies the value into an inline `style`, so it goes through
+ * `escapeCssValue` — a tampered color must not smuggle in a sibling
+ * declaration.
+ */
+export function borderAttr(border: BorderValue | undefined): string {
+  const css = toBorderCss(border);
+
+  if (css === null) {
+    return "";
+  }
+
+  return ` border="${escapeCssValue(css)}"`;
 }

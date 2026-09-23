@@ -62,6 +62,7 @@ Zeigt ein Bild mit optionalem Link-Wrapping an.
 | `height` | `number` | Anzeigehöhe in px. Ohne Angabe wird sie aus der Breite abgeleitet und das Seitenverhältnis bleibt erhalten |
 | `align` | `'left' \| 'center' \| 'right'` | Horizontale Ausrichtung |
 | `borderRadius` | `number` | Eckenradius in px. Ohne Angabe oder 0 bleiben die Ecken eckig |
+| `border` | `BorderValue` | `{ width, style, color }`, um das Bild gezeichnet. Ohne Angabe kein Rahmen |
 | `decorative` | `boolean` | Blendet das Bild für Screenreader aus und sendet ein leeres `alt` |
 | `linkUrl` | `string` | Umschließt das Bild mit einem Link |
 | `linkOpenInNewTab` | `boolean` | Verhalten des Linkziels |
@@ -78,6 +79,7 @@ Eine Call-to-Action-Schaltfläche mit anpassbarem Erscheinungsbild.
 | `backgroundColor` | `string` | Hintergrundfarbe der Schaltfläche |
 | `textColor` | `string` | Textfarbe der Schaltfläche |
 | `borderRadius` | `number` | Eckenradius in px |
+| `border` | `BorderValue` | `{ width, style, color }`, um die Schaltfläche gezeichnet (optional). Mit transparentem Hintergrund entsteht eine Outline-Schaltfläche |
 | `fontSize` | `number` | Schriftgröße in px |
 | `buttonPadding` | `SpacingValue` | Innerer Abstand |
 | `fontFamily` | `string` | Überschreibung der Schriftfamilie |
@@ -237,6 +239,7 @@ Ein Layout-Container, der eine oder mehrere Spalten enthält. Siehe [Sektionen u
 | `children` | `Block[][]` | Array von Block-Arrays, eines pro Spalte |
 | `stackOnMobile` | `boolean` | Weglassen oder `true`: Spalten stapeln auf Mobilgeräten (MJML-Standard). `false`: nebeneinander (`mj-group`) |
 | `borderRadius` | `number` | Eckenradius in px (optional; weglassen oder `0` für keine Abrundung) |
+| `border` | `BorderValue` | `{ width, style, color }`, um die Sektion gezeichnet (optional; weglassen für keinen Rahmen) |
 | `wrapper` | `SectionWrapper` | Optionaler äußerer Rahmen — `{ backgroundColor?, padding?, borderRadius? }` — gerendert als `mj-wrapper`-Band um die Sektion |
 
 ## Custom

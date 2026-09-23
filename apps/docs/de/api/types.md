@@ -125,6 +125,18 @@ interface SpacingValue {
 }
 ```
 
+### BorderValue
+
+Ein einheitlicher Rahmen — gleiche Breite, gleicher Stil und gleiche Farbe auf allen vier Seiten. Sektionen, Bilder und Schaltflächen unterstützen ihn.
+
+```ts
+interface BorderValue {
+  width: number;   // px; 0 = kein Rahmen
+  style: 'solid' | 'dashed' | 'dotted';
+  color: string;
+}
+```
+
 ### BlockVisibility
 
 Steuert, auf welchen Viewports ein Block sichtbar ist.
@@ -175,6 +187,8 @@ interface ImageBlock extends BaseBlock {
   align: 'left' | 'center' | 'right';
   /** Eckenradius in px. Ohne Angabe oder 0 bleiben die Ecken eckig. */
   borderRadius?: number;
+  /** Ohne Angabe oder Breite 0 = kein Rahmen. */
+  border?: BorderValue;
   linkUrl?: string;
   linkOpenInNewTab?: boolean;
   placeholderUrl?: string;
@@ -192,6 +206,7 @@ interface ButtonBlock extends BaseBlock {
   backgroundColor: string;
   textColor: string;
   borderRadius: number;
+  border?: BorderValue;
   fontSize: number;
   buttonPadding: SpacingValue;
   fontFamily?: string;
@@ -209,6 +224,7 @@ Container für mehrspaltige Layouts.
 interface SectionBlock extends BaseBlock {
   type: 'section';
   columns: ColumnLayout;
+  border?: BorderValue;     // ohne Angabe/Breite 0: kein Rahmen
   children: Block[][];      // Array von Spalten, die jeweils Blöcke enthalten
   stackOnMobile?: boolean;  // fehlt/true: Spalten stapeln auf Mobilgeräten (MJML-Standard).
                             // false: als <mj-group> gerendert, bleiben nebeneinander.

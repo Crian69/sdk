@@ -198,6 +198,9 @@ describe("block-guide.md documents every enum value the schema declares", () => 
       .map((site) => site.path)
       .sort();
     expect(byPath).toEqual([
+      "button.border.style",
+      "image.border.style",
+      "section.border.style",
       "section.columns",
       "settings.direction",
       "social.iconSize",

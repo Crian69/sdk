@@ -4,6 +4,7 @@ import ColorPicker from "../ColorPicker.vue";
 import MergeTagInput from "../MergeTagInput.vue";
 import SlidingPillSelect from "../SlidingPillSelect.vue";
 import ToggleSwitch from "../ToggleSwitch.vue";
+import BorderControl from "./BorderControl.vue";
 import { useI18n } from "../../composables/useI18n";
 import {
   inputClass,
@@ -125,6 +126,11 @@ function updateCustomWidth(raw: string): void {
       @update:model-value="updateField('textColor', $event)"
     />
   </div>
+  <BorderControl
+    :model-value="block.border"
+    testid-prefix="button"
+    @update:model-value="updateField('border', $event)"
+  />
   <div class="tpl:grid tpl:grid-cols-2 tpl:gap-3">
     <div class="tpl:mb-3.5">
       <label :class="labelClass">{{ t.button.borderRadius }}</label>

@@ -125,6 +125,18 @@ interface SpacingValue {
 }
 ```
 
+### BorderValue
+
+A uniform border — the same width, style and color on all four sides. Sections, images and buttons accept one.
+
+```ts
+interface BorderValue {
+  width: number;   // px; 0 = no border
+  style: 'solid' | 'dashed' | 'dotted';
+  color: string;
+}
+```
+
 ### BlockVisibility
 
 Controls on which viewports a block is visible.
@@ -175,6 +187,8 @@ interface ImageBlock extends BaseBlock {
   align: 'left' | 'center' | 'right';
   /** Corner radius in px. Omitted/0 = square corners. */
   borderRadius?: number;
+  /** Omitted/width 0 = no border. */
+  border?: BorderValue;
   linkUrl?: string;
   linkOpenInNewTab?: boolean;
   placeholderUrl?: string;
@@ -192,6 +206,7 @@ interface ButtonBlock extends BaseBlock {
   backgroundColor: string;
   textColor: string;
   borderRadius: number;
+  border?: BorderValue;
   fontSize: number;
   buttonPadding: SpacingValue;
   fontFamily?: string;
@@ -209,6 +224,7 @@ Container for multi-column layouts.
 interface SectionBlock extends BaseBlock {
   type: 'section';
   columns: ColumnLayout;
+  border?: BorderValue;     // absent/width 0: no border
   children: Block[][];      // Array of columns, each containing blocks
   stackOnMobile?: boolean;  // absent/true: columns stack on mobile (MJML default).
                             // false: rendered as <mj-group> so they stay side-by-side.

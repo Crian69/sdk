@@ -156,6 +156,26 @@ describe("getBlockWrapperStyle", () => {
   it("never sets borderRadius for a non-section block", () => {
     expect(getBlockWrapperStyle(createTitleBlock()).borderRadius).toBeUndefined();
   });
+
+  it("includes the border for a section when set (canvas/preview match export)", () => {
+    const style = getBlockWrapperStyle(
+      createSectionBlock({
+        border: { width: 1, style: "dotted", color: "#cccccc" },
+      }),
+    );
+    expect(style.border).toBe("1px dotted #cccccc");
+  });
+
+  it("omits the border for a section when unset or zero-width", () => {
+    expect(getBlockWrapperStyle(createSectionBlock()).border).toBeUndefined();
+    expect(
+      getBlockWrapperStyle(
+        createSectionBlock({
+          border: { width: 0, style: "solid", color: "#cccccc" },
+        }),
+      ).border,
+    ).toBeUndefined();
+  });
 });
 
 describe("getSectionWrapperStyle", () => {

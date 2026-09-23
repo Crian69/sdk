@@ -260,3 +260,45 @@ describe("ImageBlock corner radius", () => {
     );
   });
 });
+
+// The export puts `border` on the `<img>` (mj-image's own border), so the
+// canvas borders the img itself, not the padded block box around it.
+describe("ImageBlock border", () => {
+  function mountImage(block: ReturnType<typeof createImageBlock>) {
+    return mount(ImageBlock, {
+      props: { block, viewport: "desktop" },
+      global: { provide: baseProvide() },
+    });
+  }
+
+  it("applies a stored border to the img", () => {
+    const wrapper = mountImage(
+      createImageBlock({
+        src: "https://picsum.photos/400/400",
+        width: 240,
+        border: { width: 3, style: "dashed", color: "#ff0000" },
+      }),
+    );
+    const style = (wrapper.find("img").element as HTMLElement).style;
+    expect(style.borderWidth).toBe("3px");
+    expect(style.borderStyle).toBe("dashed");
+  });
+
+  it("leaves the img border unset for no border or a 0 width", () => {
+    for (const border of [
+      undefined,
+      { width: 0, style: "solid" as const, color: "#000000" },
+    ]) {
+      const wrapper = mountImage(
+        createImageBlock({
+          src: "https://picsum.photos/400/400",
+          width: 240,
+          border,
+        }),
+      );
+      expect((wrapper.find("img").element as HTMLElement).style.border).toBe(
+        "",
+      );
+    }
+  });
+});

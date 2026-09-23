@@ -2,7 +2,7 @@ import type { ButtonBlock } from "@templatical/types";
 import type { RenderContext } from "../render-context";
 import { escapeAttr, escapeHtml } from "../escape";
 import { toPaddingString } from "../padding";
-import { bgAttr } from "../utils";
+import { bgAttr, borderAttr } from "../utils";
 import { isHiddenOnAll, getCssClassAttr } from "../visibility";
 
 /**
@@ -35,6 +35,7 @@ export function renderButton(
   const fontFamilyAttr = renderFontFamilyAttr(block.fontFamily, context);
   const widthAttr = renderWidthAttr(block.width);
   const visibilityAttr = getCssClassAttr(block);
+  const borderAttrStr = borderAttr(block.border);
   // Templates stored before `align` existed have no value for it. Fall back to
   // MJML's own default so they keep rendering exactly as they did.
   const align = block.align ?? "center";
@@ -44,7 +45,7 @@ export function renderButton(
   color="${textColor}"
   font-size="${fontSize}px"
   font-weight="bold"
-  border-radius="${borderRadius}px"
+  border-radius="${borderRadius}px"${borderAttrStr}
   inner-padding="${buttonPadding}"
   align="${align}"
   padding="${padding}"${bgColor}${fontFamilyAttr}${widthAttr}${visibilityAttr}

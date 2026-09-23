@@ -62,6 +62,7 @@ Displays an image with optional link wrapping.
 | `height` | `number` | Display height in px. Omit to derive it from the width and keep the aspect ratio |
 | `align` | `'left' \| 'center' \| 'right'` | Horizontal alignment |
 | `borderRadius` | `number` | Corner radius in px. Omit or 0 for square corners |
+| `border` | `BorderValue` | `{ width, style, color }` drawn around the image. Omit for no border |
 | `decorative` | `boolean` | Hides the image from screen readers and sends an empty `alt` |
 | `linkUrl` | `string` | Wraps image in a link |
 | `linkOpenInNewTab` | `boolean` | Link target behavior |
@@ -78,6 +79,7 @@ A call-to-action button with customizable appearance.
 | `backgroundColor` | `string` | Button background color |
 | `textColor` | `string` | Button text color |
 | `borderRadius` | `number` | Corner radius in px |
+| `border` | `BorderValue` | `{ width, style, color }` drawn around the button (optional). Pair with a transparent background for an outline button |
 | `fontSize` | `number` | Font size in px |
 | `buttonPadding` | `SpacingValue` | Inner padding |
 | `fontFamily` | `string` | Font family override |
@@ -237,6 +239,7 @@ A layout container that holds one or more columns. See [Sections and Columns](/g
 | `children` | `Block[][]` | Array of block arrays, one per column |
 | `stackOnMobile` | `boolean` | Omit or `true`: columns stack on mobile (MJML default). `false`: stay side by side (`mj-group`) |
 | `borderRadius` | `number` | Corner radius in px (optional; omit or `0` for square corners) |
+| `border` | `BorderValue` | `{ width, style, color }` drawn around the section box (optional; omit for no border) |
 | `wrapper` | `SectionWrapper` | Optional outer frame — `{ backgroundColor?, padding?, borderRadius? }` — rendered as an `mj-wrapper` band around the section |
 
 ## Custom

@@ -161,12 +161,12 @@ describe("SectionToolbar wrapper (outer frame)", () => {
 
   it("changing the wrapper radius merges with the existing frame", async () => {
     const wrapper = mountToolbar(framed());
-    // With a wrapper present there are two number inputs:
-    // [0] the section's own borderRadius, [1] the wrapper's borderRadius.
+    // With a wrapper present there are three number inputs: [0] the section's
+    // own borderRadius, [1] its border width, [2] the wrapper's borderRadius.
     const inputs = wrapper.findAll('input[type="number"]');
-    expect(inputs).toHaveLength(2);
+    expect(inputs).toHaveLength(3);
 
-    await inputs[1].setValue("16");
+    await inputs[2].setValue("16");
 
     expect(wrapper.emitted("update")![0][0]).toEqual({
       wrapper: {
@@ -175,6 +175,32 @@ describe("SectionToolbar wrapper (outer frame)", () => {
         borderRadius: 16,
       },
     });
+  });
+});
+
+describe("SectionToolbar border", () => {
+  it("emits a border when a width is entered", async () => {
+    const wrapper = mountToolbar(createSectionBlock());
+    await wrapper
+      .find('[data-testid="section-border-width-input"]')
+      .setValue("2");
+
+    expect(wrapper.emitted("update")![0][0]).toEqual({
+      border: { width: 2, style: "solid", color: "#000000" },
+    });
+  });
+
+  it("removes the border when the width goes to 0", async () => {
+    const wrapper = mountToolbar(
+      createSectionBlock({
+        border: { width: 2, style: "dashed", color: "#cccccc" },
+      }),
+    );
+    await wrapper
+      .find('[data-testid="section-border-width-input"]')
+      .setValue("0");
+
+    expect(wrapper.emitted("update")![0][0]).toEqual({ border: undefined });
   });
 });
 

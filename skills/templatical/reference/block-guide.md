@@ -58,7 +58,7 @@ Container that arranges blocks into columns.
 
 <!-- BEGIN GENERATED FIELDS: section -->
 **Required** — `columns` (ColumnLayout), `children` (Block[][]).
-**Optional** — `stackOnMobile` (bool), `borderRadius` (int), `wrapper` (SectionWrapper).
+**Optional** — `stackOnMobile` (bool), `borderRadius` (int), `border` (BorderValue), `wrapper` (SectionWrapper).
 <!-- END GENERATED FIELDS: section -->
 
 - `columns` is one of `"1"`, `"2"`, `"3"`, `"2-1"`, `"1-2"`.
@@ -66,6 +66,9 @@ Container that arranges blocks into columns.
   must match `columns` (`"1"` → one inner array; `"2"` / `"2-1"` / `"1-2"` →
   two; `"3"` → three).
 - `borderRadius` — omit or `0` for square corners.
+- `border` is `{ width, style, color }` — width in px, color a hex. It draws
+  around the section box. Omit it (or use width `0`) for no border.
+- `style` (inside `border`) is one of `"solid"`, `"dashed"`, `"dotted"`.
 - `stackOnMobile` — omit or `true` keeps the default responsive stacking
   (columns stack below 480px); `false` keeps them side by side.
 - `wrapper` is an outer full-width band: `{ backgroundColor?, padding?,
@@ -148,7 +151,7 @@ underline: bool, color?: hex }`.
 
 <!-- BEGIN GENERATED FIELDS: image -->
 **Required** — `src` (string), `alt` (string), `width` (int | "full"), `align` ("left" | "center" | "right").
-**Optional** — `height` (int), `borderRadius` (int), `linkUrl` (string), `linkOpenInNewTab` (bool), `placeholderUrl` (string), `decorative` (bool).
+**Optional** — `height` (int), `borderRadius` (int), `border` (BorderValue), `linkUrl` (string), `linkOpenInNewTab` (bool), `placeholderUrl` (string), `decorative` (bool).
 <!-- END GENERATED FIELDS: image -->
 
 - `alt` — write meaningful alt text.
@@ -159,6 +162,9 @@ underline: bool, color?: hex }`.
   square image and a radius of at least half its width (`999` is the usual
   shorthand). Outlook on Windows ignores it and shows square corners, so never
   rely on it for legibility.
+- `border` — `{ width, style, color }`, drawn around the image itself and
+  following its `borderRadius`. Omit it for no border.
+- `style` (inside `border`) is one of `"solid"`, `"dashed"`, `"dotted"`.
 - `decorative` — mark purely decorative images.
 - `placeholderUrl` — design-time stand-in shown on the editor canvas when `src`
   is a merge tag. It never reaches the sent email; omit it unless `src` is a tag.
@@ -167,10 +173,13 @@ underline: bool, color?: hex }`.
 
 <!-- BEGIN GENERATED FIELDS: button -->
 **Required** — `text` (string), `url` (string), `backgroundColor` (string), `textColor` (string), `borderRadius` (int), `fontSize` (int), `buttonPadding` (SpacingValue), `align` ("left" | "center" | "right").
-**Optional** — `openInNewTab` (bool), `fontFamily` (string), `width` (int | "full").
+**Optional** — `openInNewTab` (bool), `border` (BorderValue), `fontFamily` (string), `width` (int | "full").
 <!-- END GENERATED FIELDS: button -->
 
 - `buttonPadding` is `{ top, right, bottom, left }`.
+- `border` — `{ width, style, color }`, drawn around the button. With a
+  `backgroundColor` of `"transparent"` it makes an outline (ghost) button.
+- `style` (inside `border`) is one of `"solid"`, `"dashed"`, `"dotted"`.
 - `align` places the button within its column; no visible effect when `width` is
   `"full"`.
 

@@ -9,6 +9,7 @@ import {
 import ColorPicker from "../ColorPicker.vue";
 import SpacingControl from "../SpacingControl.vue";
 import ToggleSwitch from "../ToggleSwitch.vue";
+import BorderControl from "./BorderControl.vue";
 import type {
   ColumnLayout,
   SectionBlock,
@@ -113,6 +114,11 @@ function handleWrapperRadius(event: Event): void {
       <span :class="inputSuffixClass">px</span>
     </div>
   </div>
+  <BorderControl
+    :model-value="block.border"
+    testid-prefix="section"
+    @update:model-value="emit('update', { border: $event })"
+  />
   <div class="tpl:mb-3.5">
     <ToggleSwitch
       class="tpl:text-xs tpl:text-[var(--tpl-text)]"

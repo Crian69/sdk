@@ -3,6 +3,7 @@ import type {
   ButtonBlock as ButtonBlockType,
   ViewportSize,
 } from "@templatical/types";
+import { toBorderCss } from "@templatical/types";
 import { computed } from "vue";
 import MergeTagPreviewText from "../MergeTagPreviewText.vue";
 
@@ -23,6 +24,10 @@ const buttonStyle = computed(() => {
     borderRadius: `${props.block.borderRadius}px`,
     textAlign: "center",
   };
+  const border = toBorderCss(props.block.border);
+  if (border !== null) {
+    style.border = border;
+  }
   if (props.block.fontFamily) {
     style.fontFamily = props.block.fontFamily;
   }

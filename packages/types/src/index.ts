@@ -5,6 +5,8 @@ export type {
   BlockStyles,
   BlockType,
   BlockVisibility,
+  BorderStyle,
+  BorderValue,
   ButtonBlock,
   ColumnLayout,
   CountdownBlock,
@@ -31,7 +33,11 @@ export type {
   HeadingLevel,
   VideoBlock,
 } from "./blocks";
-export { HEADING_LEVEL_FONT_SIZE, RICH_TEXT_SPACING } from "./blocks";
+export {
+  HEADING_LEVEL_FONT_SIZE,
+  RICH_TEXT_SPACING,
+  toBorderCss,
+} from "./blocks";
 
 // Social icon glyphs (shared by the editor's inline SVG + the renderer's PNG rasterizer)
 export type { SocialIconGlyph } from "./social";

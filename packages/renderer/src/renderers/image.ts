@@ -2,7 +2,7 @@ import type { ImageBlock } from "@templatical/types";
 import type { RenderContext } from "../render-context";
 import { escapeAttr } from "../escape";
 import { toPaddingString } from "../padding";
-import { bgAttr, heightAttr } from "../utils";
+import { bgAttr, borderAttr, heightAttr } from "../utils";
 import { isHiddenOnAll, getCssClassAttr } from "../visibility";
 
 /**
@@ -33,6 +33,7 @@ export function renderImage(block: ImageBlock, context: RenderContext): string {
     block.borderRadius && block.borderRadius > 0
       ? ` border-radius="${block.borderRadius}px"`
       : "";
+  const borderAttrStr = borderAttr(block.border);
 
   let linkAttr = "";
   if (block.linkUrl) {
@@ -53,6 +54,6 @@ export function renderImage(block: ImageBlock, context: RenderContext): string {
   alt="${alt}"
   width="${width}"${height}
   align="${align}"
-  padding="${padding}"${bgColor}${borderRadiusAttr}${linkAttr}${visibilityAttr}${roleAttr}
+  padding="${padding}"${bgColor}${borderAttrStr}${borderRadiusAttr}${linkAttr}${visibilityAttr}${roleAttr}
 />`;
 }

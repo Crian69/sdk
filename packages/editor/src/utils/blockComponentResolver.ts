@@ -1,5 +1,5 @@
 import type { Block, TemplateSettings } from "@templatical/types";
-import { RICH_TEXT_SPACING } from "@templatical/types";
+import { RICH_TEXT_SPACING, toBorderCss } from "@templatical/types";
 import type { Component } from "vue";
 import type { UseBlockRegistryReturn } from "../composables/useBlockRegistry";
 
@@ -95,6 +95,14 @@ export function getBlockWrapperStyle(block: Block): Record<string, string> {
     block.borderRadius > 0
   ) {
     style.borderRadius = `${block.borderRadius}px`;
+  }
+  // Same for the section border, which exports as `border` on the
+  // `mj-section`. `toBorderCss` is the formatter the renderer uses too.
+  if (block.type === "section") {
+    const border = toBorderCss(block.border);
+    if (border !== null) {
+      style.border = border;
+    }
   }
   return style;
 }

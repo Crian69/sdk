@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import MergeTagInput from "../MergeTagInput.vue";
 import NumberWithSuffix from "./NumberWithSuffix.vue";
+import BorderControl from "./BorderControl.vue";
 import SlidingPillSelect from "../SlidingPillSelect.vue";
 import ToggleSwitch from "../ToggleSwitch.vue";
 import { useI18n } from "../../composables/useI18n";
@@ -323,6 +324,11 @@ const { isOver } = useImageDrop({
       @update:model-value="updateBorderRadius"
     />
   </div>
+  <BorderControl
+    :model-value="block.border"
+    testid-prefix="image"
+    @update:model-value="updateField('border', $event)"
+  />
   <div class="tpl:mb-3.5">
     <label :class="labelClass">{{ t.title.align }}</label>
     <SlidingPillSelect

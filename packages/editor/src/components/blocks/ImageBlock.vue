@@ -5,7 +5,7 @@ import type {
   ImageBlock as ImageBlockType,
   ViewportSize,
 } from "@templatical/types";
-import { containsMergeTag } from "@templatical/types";
+import { containsMergeTag, toBorderCss } from "@templatical/types";
 import MergeTagPreviewText from "../MergeTagPreviewText.vue";
 import { Image, Upload, LoaderCircle } from "@lucide/vue";
 import { computed, inject, ref } from "vue";
@@ -95,6 +95,7 @@ const imageStyle = computed(() => {
       props.block.borderRadius && props.block.borderRadius > 0
         ? `${props.block.borderRadius}px`
         : undefined,
+    border: toBorderCss(props.block.border) ?? undefined,
     display: "block",
     marginLeft: align === "center" || align === "right" ? "auto" : undefined,
     marginRight: align === "center" ? "auto" : undefined,

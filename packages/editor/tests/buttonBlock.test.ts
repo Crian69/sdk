@@ -59,3 +59,21 @@ describe("ButtonBlock alignment", () => {
     expect((wrapper.find("a").element as HTMLElement).style.width).toBe("100%");
   });
 });
+
+describe("ButtonBlock border", () => {
+  it("borders the button itself, like the exported mj-button", () => {
+    const wrapper = mountButton(
+      createButtonBlock({
+        border: { width: 2, style: "solid", color: "#123456" },
+      }),
+    );
+    const style = (wrapper.find("a").element as HTMLElement).style;
+    expect(style.borderWidth).toBe("2px");
+    expect(style.borderStyle).toBe("solid");
+  });
+
+  it("sets no border when none is stored", () => {
+    const wrapper = mountButton(createButtonBlock());
+    expect((wrapper.find("a").element as HTMLElement).style.border).toBe("");
+  });
+});

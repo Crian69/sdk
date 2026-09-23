@@ -130,6 +130,10 @@
           "type": "number",
           "description": "Corner radius in px. Omitted/0 = square corners."
         },
+        "border": {
+          "$ref": "#/definitions/BorderValue",
+          "description": "Border around the section box. Omitted or width 0 = no border."
+        },
         "wrapper": {
           "$ref": "#/definitions/SectionWrapper",
           "description": "Optional outer frame (rendered as an `mj-wrapper` around the section)."
@@ -207,6 +211,36 @@
         "3",
         "2-1",
         "1-2"
+      ]
+    },
+    "BorderValue": {
+      "type": "object",
+      "properties": {
+        "width": {
+          "type": "number",
+          "description": "Width in px. `0` means no border."
+        },
+        "style": {
+          "$ref": "#/definitions/BorderStyle"
+        },
+        "color": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "width",
+        "style",
+        "color"
+      ],
+      "additionalProperties": false,
+      "description": "A uniform border — the same width, style and color on all four sides. Only elements MJML can border natively carry one: sections, images and buttons."
+    },
+    "BorderStyle": {
+      "type": "string",
+      "enum": [
+        "solid",
+        "dashed",
+        "dotted"
       ]
     },
     "SectionWrapper": {
@@ -442,6 +476,10 @@
           "type": "number",
           "description": "Corner radius in px. Omitted/0 = square corners. A radius of at least half the rendered size rounds a square image to a circle, which is how avatar and portrait layouts are built."
         },
+        "border": {
+          "$ref": "#/definitions/BorderValue",
+          "description": "Border around the image itself. Omitted or width 0 = no border."
+        },
         "linkUrl": {
           "type": "string"
         },
@@ -525,6 +563,10 @@
         },
         "borderRadius": {
           "type": "number"
+        },
+        "border": {
+          "$ref": "#/definitions/BorderValue",
+          "description": "Border around the button itself. Omitted or width 0 = no border. With a transparent `backgroundColor` this gives an outline (\"ghost\") button."
         },
         "fontSize": {
           "type": "number"
