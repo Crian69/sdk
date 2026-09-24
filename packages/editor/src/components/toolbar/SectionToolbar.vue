@@ -1,16 +1,13 @@
 <script setup lang="ts">
 import { useI18n } from "../../composables/useI18n";
-import {
-  inputClass,
-  inputGroupInputClass,
-  inputSuffixClass,
-  labelClass,
-} from "../../constants/styleConstants";
+import { inputClass, labelClass } from "../../constants/styleConstants";
 import ColorPicker from "../ColorPicker.vue";
 import SpacingControl from "../SpacingControl.vue";
 import ToggleSwitch from "../ToggleSwitch.vue";
 import BorderControl from "./BorderControl.vue";
+import RadiusControl from "./RadiusControl.vue";
 import type {
+  BorderRadiusValue,
   ColumnLayout,
   SectionBlock,
   SectionWrapper,
@@ -47,8 +44,7 @@ function handleStackOnMobileChange(checked: boolean): void {
   emit("update", { stackOnMobile: checked });
 }
 
-function handleBorderRadiusChange(event: Event): void {
-  const borderRadius = Number((event.target as HTMLInputElement).value);
+function handleBorderRadiusChange(borderRadius: BorderRadiusValue): void {
   emit("update", { borderRadius });
 }
 
@@ -68,10 +64,8 @@ function handleWrapperPadding(value: SpacingValue): void {
   updateWrapper({ padding: value });
 }
 
-function handleWrapperRadius(event: Event): void {
-  updateWrapper({
-    borderRadius: Number((event.target as HTMLInputElement).value),
-  });
+function handleWrapperRadius(borderRadius: BorderRadiusValue): void {
+  updateWrapper({ borderRadius });
 }
 </script>
 
@@ -100,20 +94,13 @@ function handleWrapperRadius(event: Event): void {
       @update:model-value="handleStackOnMobileChange($event)"
     />
   </div>
-  <div class="tpl:mb-3.5">
-    <label :class="labelClass">{{ t.section.borderRadius }}</label>
-    <div class="tpl:flex tpl:items-stretch">
-      <input
-        type="number"
-        :class="inputGroupInputClass"
-        :value="block.borderRadius ?? 0"
-        min="0"
-        max="50"
-        @input="handleBorderRadiusChange"
-      />
-      <span :class="inputSuffixClass">px</span>
-    </div>
-  </div>
+  <RadiusControl
+    :model-value="block.borderRadius"
+    :label="t.section.borderRadius"
+    :max="50"
+    testid-prefix="section"
+    @update:model-value="handleBorderRadiusChange"
+  />
   <BorderControl
     :model-value="block.border"
     testid-prefix="section"
@@ -144,20 +131,13 @@ function handleWrapperRadius(event: Event): void {
         "
         @update:model-value="handleWrapperPadding"
       />
-      <div>
-        <label :class="labelClass">{{ t.section.borderRadius }}</label>
-        <div class="tpl:flex tpl:items-stretch">
-          <input
-            type="number"
-            :class="inputGroupInputClass"
-            :value="block.wrapper.borderRadius ?? 0"
-            min="0"
-            max="50"
-            @input="handleWrapperRadius"
-          />
-          <span :class="inputSuffixClass">px</span>
-        </div>
-      </div>
+      <RadiusControl
+        :model-value="block.wrapper.borderRadius"
+        :label="t.section.borderRadius"
+        :max="50"
+        testid-prefix="section-wrapper"
+        @update:model-value="handleWrapperRadius"
+      />
     </div>
   </div>
 </template>

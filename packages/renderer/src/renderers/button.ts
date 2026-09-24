@@ -2,6 +2,8 @@ import type { ButtonBlock } from "@templatical/types";
 import type { RenderContext } from "../render-context";
 import { escapeAttr, escapeHtml } from "../escape";
 import { toPaddingString } from "../padding";
+import type { BorderRadiusValue } from "@templatical/types";
+import { toBorderRadiusCss } from "@templatical/types";
 import { bgAttr, borderAttr } from "../utils";
 import { isHiddenOnAll, getCssClassAttr } from "../visibility";
 
@@ -27,7 +29,7 @@ export function renderButton(
   const backgroundColor = escapeAttr(block.backgroundColor);
   const textColor = escapeAttr(block.textColor);
   const fontSize = block.fontSize;
-  const borderRadius = block.borderRadius;
+  const borderRadius = renderButtonRadius(block.borderRadius);
   const text = escapeHtml(block.text);
   const targetAttr = block.openInNewTab
     ? ' target="_blank" rel="noopener"'
@@ -45,7 +47,7 @@ export function renderButton(
   color="${textColor}"
   font-size="${fontSize}px"
   font-weight="bold"
-  border-radius="${borderRadius}px"${borderAttrStr}
+  border-radius="${borderRadius}"${borderAttrStr}
   inner-padding="${buttonPadding}"
   align="${align}"
   padding="${padding}"${bgColor}${fontFamilyAttr}${widthAttr}${visibilityAttr}
@@ -63,6 +65,19 @@ function renderFontFamilyAttr(
   const resolved = context.resolveFontFamily(fontFamily);
 
   return ` font-family="${resolved}"`;
+}
+
+/**
+ * The button has always emitted its radius, `0px` included, so a plain number
+ * keeps rendering exactly as it did. Per-corner radii go through the shared
+ * formatter, with all-square corners as `0px`.
+ */
+function renderButtonRadius(radius: BorderRadiusValue): string {
+  if (typeof radius === "number") {
+    return `${radius}px`;
+  }
+
+  return toBorderRadiusCss(radius) ?? "0px";
 }
 
 function renderWidthAttr(width: number | "full" | undefined): string {

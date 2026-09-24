@@ -1246,14 +1246,31 @@ interface SpacingValue {
 
 ### BorderValue
 
-A uniform border — the same width, style and color on all four sides. Sections, images and buttons accept one.
+A border described per side, like `SpacingValue`: each side has its own width, style and color, and a width of `0` leaves that side undrawn. Sections, images and buttons accept one.
 
 ```ts
-interface BorderValue {
-  width: number;   // px; 0 = no border
+interface BorderSideValue {
+  width: number;   // px; 0 = side not drawn
   style: 'solid' | 'dashed' | 'dotted';
   color: string;
 }
+
+interface BorderValue {
+  top: BorderSideValue;
+  right: BorderSideValue;
+  bottom: BorderSideValue;
+  left: BorderSideValue;
+}
+```
+
+### BorderRadiusValue
+
+A corner radius in px: one number for all corners, or one per corner. Sections, section wrappers, images and buttons accept it.
+
+```ts
+type BorderRadiusValue =
+  | number
+  | { topLeft: number; topRight: number; bottomRight: number; bottomLeft: number };
 ```
 
 ### BlockVisibility
@@ -1305,8 +1322,8 @@ interface ImageBlock extends BaseBlock {
   height?: number;
   align: 'left' | 'center' | 'right';
   /** Corner radius in px. Omitted/0 = square corners. */
-  borderRadius?: number;
-  /** Omitted/width 0 = no border. */
+  borderRadius?: BorderRadiusValue;
+  /** Omitted = no border. */
   border?: BorderValue;
   linkUrl?: string;
   linkOpenInNewTab?: boolean;
@@ -1324,7 +1341,7 @@ interface ButtonBlock extends BaseBlock {
   url: string;
   backgroundColor: string;
   textColor: string;
-  borderRadius: number;
+  borderRadius: BorderRadiusValue;
   border?: BorderValue;
   fontSize: number;
   buttonPadding: SpacingValue;
@@ -1343,7 +1360,7 @@ Container for multi-column layouts.
 interface SectionBlock extends BaseBlock {
   type: 'section';
   columns: ColumnLayout;
-  border?: BorderValue;     // absent/width 0: no border
+  border?: BorderValue;     // absent: no border
   children: Block[][];      // Array of columns, each containing blocks
   stackOnMobile?: boolean;  // absent/true: columns stack on mobile (MJML default).
                             // false: rendered as <mj-group> so they stay side-by-side.
@@ -4841,8 +4858,8 @@ Displays an image with optional link wrapping.
 | `width` | `number \| 'full'` | Display width in px, or `'full'` for 100% |
 | `height` | `number` | Display height in px. Omit to derive it from the width and keep the aspect ratio |
 | `align` | `'left' \| 'center' \| 'right'` | Horizontal alignment |
-| `borderRadius` | `number` | Corner radius in px. Omit or 0 for square corners |
-| `border` | `BorderValue` | `{ width, style, color }` drawn around the image. Omit for no border |
+| `borderRadius` | `BorderRadiusValue` | Corner radius in px, or `{ topLeft, topRight, bottomRight, bottomLeft }` per corner. Omit or 0 for square corners |
+| `border` | `BorderValue` | `{ top, right, bottom, left }`, each `{ width, style, color }`, drawn around the image. Width `0` leaves a side undrawn. Omit for no border |
 | `decorative` | `boolean` | Hides the image from screen readers and sends an empty `alt` |
 | `linkUrl` | `string` | Wraps image in a link |
 | `linkOpenInNewTab` | `boolean` | Link target behavior |
@@ -4858,8 +4875,8 @@ A call-to-action button with customizable appearance.
 | `url` | `string` | Link URL |
 | `backgroundColor` | `string` | Button background color |
 | `textColor` | `string` | Button text color |
-| `borderRadius` | `number` | Corner radius in px |
-| `border` | `BorderValue` | `{ width, style, color }` drawn around the button (optional). Pair with a transparent background for an outline button |
+| `borderRadius` | `BorderRadiusValue` | Corner radius in px, or one per corner |
+| `border` | `BorderValue` | `{ top, right, bottom, left }`, each `{ width, style, color }`, drawn around the button (optional). Pair with a transparent background for an outline button |
 | `fontSize` | `number` | Font size in px |
 | `buttonPadding` | `SpacingValue` | Inner padding |
 | `fontFamily` | `string` | Font family override |
@@ -5018,8 +5035,8 @@ A layout container that holds one or more columns. See [Sections and Columns](/g
 | `columns` | `ColumnLayout` | Column layout preset |
 | `children` | `Block[][]` | Array of block arrays, one per column |
 | `stackOnMobile` | `boolean` | Omit or `true`: columns stack on mobile (MJML default). `false`: stay side by side (`mj-group`) |
-| `borderRadius` | `number` | Corner radius in px (optional; omit or `0` for square corners) |
-| `border` | `BorderValue` | `{ width, style, color }` drawn around the section box (optional; omit for no border) |
+| `borderRadius` | `BorderRadiusValue` | Corner radius in px, or one per corner (optional; omit or `0` for square corners) |
+| `border` | `BorderValue` | `{ top, right, bottom, left }`, each `{ width, style, color }`, drawn around the section box (optional; omit for no border) |
 | `wrapper` | `SectionWrapper` | Optional outer frame — `{ backgroundColor?, padding?, borderRadius? }` — rendered as an `mj-wrapper` band around the section |
 
 ## Custom

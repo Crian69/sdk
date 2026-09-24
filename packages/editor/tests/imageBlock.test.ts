@@ -3,7 +3,11 @@ import { shallowRef } from "vue";
 import "./dom-stubs";
 import { describe, expect, it, vi } from "vitest";
 import { flushPromises, mount } from "@vue/test-utils";
-import { SYNTAX_PRESETS, createImageBlock } from "@templatical/types";
+import {
+  SYNTAX_PRESETS,
+  createImageBlock,
+  uniformBorder,
+} from "@templatical/types";
 import enTranslations from "../src/i18n/locales/en";
 import {
   IMAGE_URL_RESOLVER_KEY,
@@ -276,7 +280,7 @@ describe("ImageBlock border", () => {
       createImageBlock({
         src: "https://picsum.photos/400/400",
         width: 240,
-        border: { width: 3, style: "dashed", color: "#ff0000" },
+        border: uniformBorder({ width: 3, style: "dashed", color: "#ff0000" }),
       }),
     );
     const style = (wrapper.find("img").element as HTMLElement).style;
@@ -284,10 +288,23 @@ describe("ImageBlock border", () => {
     expect(style.borderStyle).toBe("dashed");
   });
 
+  it("rounds only the chosen corners of the img", () => {
+    const wrapper = mountImage(
+      createImageBlock({
+        src: "https://picsum.photos/400/400",
+        width: 240,
+        borderRadius: { topLeft: 12, topRight: 12, bottomRight: 0, bottomLeft: 0 },
+      }),
+    );
+    expect(
+      (wrapper.find("img").element as HTMLElement).style.borderRadius,
+    ).toBe("12px 12px 0px 0px");
+  });
+
   it("leaves the img border unset for no border or a 0 width", () => {
     for (const border of [
       undefined,
-      { width: 0, style: "solid" as const, color: "#000000" },
+      uniformBorder({ width: 0, style: "solid", color: "#000000" }),
     ]) {
       const wrapper = mountImage(
         createImageBlock({

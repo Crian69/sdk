@@ -127,14 +127,31 @@ interface SpacingValue {
 
 ### BorderValue
 
-Ein einheitlicher Rahmen — gleiche Breite, gleicher Stil und gleiche Farbe auf allen vier Seiten. Sektionen, Bilder und Schaltflächen unterstützen ihn.
+Ein Rahmen pro Seite, wie `SpacingValue`: Jede Seite hat eigene Breite, eigenen Stil und eigene Farbe; Breite `0` lässt die Seite weg. Sektionen, Bilder und Schaltflächen unterstützen ihn.
 
 ```ts
-interface BorderValue {
-  width: number;   // px; 0 = kein Rahmen
+interface BorderSideValue {
+  width: number;   // px; 0 = Seite nicht gezeichnet
   style: 'solid' | 'dashed' | 'dotted';
   color: string;
 }
+
+interface BorderValue {
+  top: BorderSideValue;
+  right: BorderSideValue;
+  bottom: BorderSideValue;
+  left: BorderSideValue;
+}
+```
+
+### BorderRadiusValue
+
+Ein Eckenradius in px: eine Zahl für alle Ecken oder einer pro Ecke. Sektionen, Sektions-Wrapper, Bilder und Schaltflächen unterstützen ihn.
+
+```ts
+type BorderRadiusValue =
+  | number
+  | { topLeft: number; topRight: number; bottomRight: number; bottomLeft: number };
 ```
 
 ### BlockVisibility
@@ -186,8 +203,8 @@ interface ImageBlock extends BaseBlock {
   height?: number;
   align: 'left' | 'center' | 'right';
   /** Eckenradius in px. Ohne Angabe oder 0 bleiben die Ecken eckig. */
-  borderRadius?: number;
-  /** Ohne Angabe oder Breite 0 = kein Rahmen. */
+  borderRadius?: BorderRadiusValue;
+  /** Ohne Angabe = kein Rahmen. */
   border?: BorderValue;
   linkUrl?: string;
   linkOpenInNewTab?: boolean;
@@ -205,7 +222,7 @@ interface ButtonBlock extends BaseBlock {
   url: string;
   backgroundColor: string;
   textColor: string;
-  borderRadius: number;
+  borderRadius: BorderRadiusValue;
   border?: BorderValue;
   fontSize: number;
   buttonPadding: SpacingValue;
@@ -224,7 +241,7 @@ Container für mehrspaltige Layouts.
 interface SectionBlock extends BaseBlock {
   type: 'section';
   columns: ColumnLayout;
-  border?: BorderValue;     // ohne Angabe/Breite 0: kein Rahmen
+  border?: BorderValue;     // ohne Angabe: kein Rahmen
   children: Block[][];      // Array von Spalten, die jeweils Blöcke enthalten
   stackOnMobile?: boolean;  // fehlt/true: Spalten stapeln auf Mobilgeräten (MJML-Standard).
                             // false: als <mj-group> gerendert, bleiben nebeneinander.

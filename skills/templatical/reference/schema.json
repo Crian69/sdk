@@ -127,12 +127,12 @@
           "description": "Whether columns stack vertically on mobile. Absent or `true` keeps MJML's default responsive behavior (columns stack below 480px). `false` renders the columns inside an `<mj-group>` so they stay side-by-side on mobile, proportionally shrunk to fit."
         },
         "borderRadius": {
-          "type": "number",
-          "description": "Corner radius in px. Omitted/0 = square corners."
+          "$ref": "#/definitions/BorderRadiusValue",
+          "description": "Corner radius in px — one number, or a radius per corner. Omitted/0 = square corners."
         },
         "border": {
           "$ref": "#/definitions/BorderValue",
-          "description": "Border around the section box. Omitted or width 0 = no border."
+          "description": "Border around the section box, per side. Omitted = no border; a side with width 0 is not drawn."
         },
         "wrapper": {
           "$ref": "#/definitions/SectionWrapper",
@@ -213,12 +213,73 @@
         "1-2"
       ]
     },
+    "BorderRadiusValue": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "$ref": "#/definitions/CornerRadius"
+        }
+      ],
+      "description": "A corner radius in px: one number for all four corners, or a radius per corner."
+    },
+    "CornerRadius": {
+      "type": "object",
+      "properties": {
+        "topLeft": {
+          "type": "number"
+        },
+        "topRight": {
+          "type": "number"
+        },
+        "bottomRight": {
+          "type": "number"
+        },
+        "bottomLeft": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "topLeft",
+        "topRight",
+        "bottomRight",
+        "bottomLeft"
+      ],
+      "additionalProperties": false,
+      "description": "A radius per corner, in px."
+    },
     "BorderValue": {
+      "type": "object",
+      "properties": {
+        "top": {
+          "$ref": "#/definitions/BorderSideValue"
+        },
+        "right": {
+          "$ref": "#/definitions/BorderSideValue"
+        },
+        "bottom": {
+          "$ref": "#/definitions/BorderSideValue"
+        },
+        "left": {
+          "$ref": "#/definitions/BorderSideValue"
+        }
+      },
+      "required": [
+        "top",
+        "right",
+        "bottom",
+        "left"
+      ],
+      "additionalProperties": false,
+      "description": "A border described per side, like `SpacingValue`. Only elements MJML can border natively carry one: sections, images and buttons."
+    },
+    "BorderSideValue": {
       "type": "object",
       "properties": {
         "width": {
           "type": "number",
-          "description": "Width in px. `0` means no border."
+          "description": "Width in px. `0` means no border on this side."
         },
         "style": {
           "$ref": "#/definitions/BorderStyle"
@@ -233,7 +294,7 @@
         "color"
       ],
       "additionalProperties": false,
-      "description": "A uniform border — the same width, style and color on all four sides. Only elements MJML can border natively carry one: sections, images and buttons."
+      "description": "One side of a border. A width of `0` leaves that side undrawn."
     },
     "BorderStyle": {
       "type": "string",
@@ -253,8 +314,8 @@
           "$ref": "#/definitions/SpacingValue"
         },
         "borderRadius": {
-          "type": "number",
-          "description": "Corner radius in px for the outer frame. Omitted/0 = square corners."
+          "$ref": "#/definitions/BorderRadiusValue",
+          "description": "Corner radius in px for the outer frame — one number, or a radius per corner. Omitted/0 = square corners."
         }
       },
       "additionalProperties": false,
@@ -473,12 +534,12 @@
           ]
         },
         "borderRadius": {
-          "type": "number",
-          "description": "Corner radius in px. Omitted/0 = square corners. A radius of at least half the rendered size rounds a square image to a circle, which is how avatar and portrait layouts are built."
+          "$ref": "#/definitions/BorderRadiusValue",
+          "description": "Corner radius in px. Omitted/0 = square corners. A radius of at least half the rendered size rounds a square image to a circle, which is how avatar and portrait layouts are built. A radius per corner is also accepted."
         },
         "border": {
           "$ref": "#/definitions/BorderValue",
-          "description": "Border around the image itself. Omitted or width 0 = no border."
+          "description": "Border around the image itself, per side. Omitted = no border; a side with width 0 is not drawn."
         },
         "linkUrl": {
           "type": "string"
@@ -562,11 +623,12 @@
           "type": "string"
         },
         "borderRadius": {
-          "type": "number"
+          "$ref": "#/definitions/BorderRadiusValue",
+          "description": "Corner radius in px — one number, or a radius per corner."
         },
         "border": {
           "$ref": "#/definitions/BorderValue",
-          "description": "Border around the button itself. Omitted or width 0 = no border. With a transparent `backgroundColor` this gives an outline (\"ghost\") button."
+          "description": "Border around the button itself, per side. Omitted = no border; a side with width 0 is not drawn. With a transparent `backgroundColor` this gives an outline (\"ghost\") button."
         },
         "fontSize": {
           "type": "number"

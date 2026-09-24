@@ -3,7 +3,7 @@ import { isSection } from "@templatical/types";
 import type { BlockRenderer, RenderContext } from "../render-context";
 import { getWidthPercentages, getWidthPixels } from "../columns";
 import { toPaddingString } from "../padding";
-import { bgAttr, borderAttr } from "../utils";
+import { bgAttr, borderAttr, borderRadiusAttr } from "../utils";
 import { isHiddenOnAll, getCssClassAttr } from "../visibility";
 import { wrapWithDisplayCondition } from "../display-condition";
 
@@ -31,10 +31,7 @@ export function renderSection(
   const padding = toPaddingString(block.styles.padding);
   const bgColor = bgAttr(block.styles.backgroundColor, "native");
   const visibilityAttr = getCssClassAttr(block);
-  const borderRadiusAttr =
-    block.borderRadius && block.borderRadius > 0
-      ? ` border-radius="${block.borderRadius}px"`
-      : "";
+  const borderRadiusAttrStr = borderRadiusAttr(block.borderRadius);
   const borderAttrStr = borderAttr(block.border);
 
   const children = block.children;
@@ -87,7 +84,7 @@ ${columns}
 </mj-group>`
       : columns;
 
-  return `<mj-section${bgColor} padding="${padding}"${borderAttrStr}${borderRadiusAttr}${visibilityAttr}${dirAttr}>
+  return `<mj-section${bgColor} padding="${padding}"${borderAttrStr}${borderRadiusAttrStr}${visibilityAttr}${dirAttr}>
 ${body}
 </mj-section>`;
 }

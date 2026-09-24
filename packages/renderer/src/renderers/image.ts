@@ -2,7 +2,7 @@ import type { ImageBlock } from "@templatical/types";
 import type { RenderContext } from "../render-context";
 import { escapeAttr } from "../escape";
 import { toPaddingString } from "../padding";
-import { bgAttr, borderAttr, heightAttr } from "../utils";
+import { bgAttr, borderAttr, borderRadiusAttr, heightAttr } from "../utils";
 import { isHiddenOnAll, getCssClassAttr } from "../visibility";
 
 /**
@@ -27,12 +27,7 @@ export function renderImage(block: ImageBlock, context: RenderContext): string {
 
   const visibilityAttr = getCssClassAttr(block);
 
-  // Same shape as section.ts: omitted or 0 emits nothing rather than a
-  // `border-radius="0px"` every existing template would suddenly grow.
-  const borderRadiusAttr =
-    block.borderRadius && block.borderRadius > 0
-      ? ` border-radius="${block.borderRadius}px"`
-      : "";
+  const borderRadiusAttrStr = borderRadiusAttr(block.borderRadius);
   const borderAttrStr = borderAttr(block.border);
 
   let linkAttr = "";
@@ -54,6 +49,6 @@ export function renderImage(block: ImageBlock, context: RenderContext): string {
   alt="${alt}"
   width="${width}"${height}
   align="${align}"
-  padding="${padding}"${bgColor}${borderAttrStr}${borderRadiusAttr}${linkAttr}${visibilityAttr}${roleAttr}
+  padding="${padding}"${bgColor}${borderAttrStr}${borderRadiusAttrStr}${linkAttr}${visibilityAttr}${roleAttr}
 />`;
 }

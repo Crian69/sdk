@@ -4,6 +4,7 @@ import { mount } from "@vue/test-utils";
 import {
   createParagraphBlock,
   createSectionBlock,
+  uniformBorder,
 } from "@templatical/types";
 import SectionToolbar from "../src/components/toolbar/SectionToolbar.vue";
 import { TRANSLATIONS_KEY } from "../src/keys";
@@ -186,14 +187,14 @@ describe("SectionToolbar border", () => {
       .setValue("2");
 
     expect(wrapper.emitted("update")![0][0]).toEqual({
-      border: { width: 2, style: "solid", color: "#000000" },
+      border: uniformBorder({ width: 2, style: "solid", color: "#000000" }),
     });
   });
 
   it("removes the border when the width goes to 0", async () => {
     const wrapper = mountToolbar(
       createSectionBlock({
-        border: { width: 2, style: "dashed", color: "#cccccc" },
+        border: uniformBorder({ width: 2, style: "dashed", color: "#cccccc" }),
       }),
     );
     await wrapper

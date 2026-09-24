@@ -61,8 +61,8 @@ Zeigt ein Bild mit optionalem Link-Wrapping an.
 | `width` | `number \| 'full'` | Anzeigebreite in px oder `'full'` für 100% |
 | `height` | `number` | Anzeigehöhe in px. Ohne Angabe wird sie aus der Breite abgeleitet und das Seitenverhältnis bleibt erhalten |
 | `align` | `'left' \| 'center' \| 'right'` | Horizontale Ausrichtung |
-| `borderRadius` | `number` | Eckenradius in px. Ohne Angabe oder 0 bleiben die Ecken eckig |
-| `border` | `BorderValue` | `{ width, style, color }`, um das Bild gezeichnet. Ohne Angabe kein Rahmen |
+| `borderRadius` | `BorderRadiusValue` | Eckenradius in px oder `{ topLeft, topRight, bottomRight, bottomLeft }` pro Ecke. Ohne Angabe oder 0 bleiben die Ecken eckig |
+| `border` | `BorderValue` | `{ top, right, bottom, left }`, jeweils `{ width, style, color }`, um das Bild gezeichnet. Breite `0` lässt eine Seite weg. Ohne Angabe kein Rahmen |
 | `decorative` | `boolean` | Blendet das Bild für Screenreader aus und sendet ein leeres `alt` |
 | `linkUrl` | `string` | Umschließt das Bild mit einem Link |
 | `linkOpenInNewTab` | `boolean` | Verhalten des Linkziels |
@@ -78,8 +78,8 @@ Eine Call-to-Action-Schaltfläche mit anpassbarem Erscheinungsbild.
 | `url` | `string` | Link-URL |
 | `backgroundColor` | `string` | Hintergrundfarbe der Schaltfläche |
 | `textColor` | `string` | Textfarbe der Schaltfläche |
-| `borderRadius` | `number` | Eckenradius in px |
-| `border` | `BorderValue` | `{ width, style, color }`, um die Schaltfläche gezeichnet (optional). Mit transparentem Hintergrund entsteht eine Outline-Schaltfläche |
+| `borderRadius` | `BorderRadiusValue` | Eckenradius in px oder einer pro Ecke |
+| `border` | `BorderValue` | `{ top, right, bottom, left }`, jeweils `{ width, style, color }`, um die Schaltfläche gezeichnet (optional). Mit transparentem Hintergrund entsteht eine Outline-Schaltfläche |
 | `fontSize` | `number` | Schriftgröße in px |
 | `buttonPadding` | `SpacingValue` | Innerer Abstand |
 | `fontFamily` | `string` | Überschreibung der Schriftfamilie |
@@ -238,8 +238,8 @@ Ein Layout-Container, der eine oder mehrere Spalten enthält. Siehe [Sektionen u
 | `columns` | `ColumnLayout` | Preset für das Spaltenlayout |
 | `children` | `Block[][]` | Array von Block-Arrays, eines pro Spalte |
 | `stackOnMobile` | `boolean` | Weglassen oder `true`: Spalten stapeln auf Mobilgeräten (MJML-Standard). `false`: nebeneinander (`mj-group`) |
-| `borderRadius` | `number` | Eckenradius in px (optional; weglassen oder `0` für keine Abrundung) |
-| `border` | `BorderValue` | `{ width, style, color }`, um die Sektion gezeichnet (optional; weglassen für keinen Rahmen) |
+| `borderRadius` | `BorderRadiusValue` | Eckenradius in px oder einer pro Ecke (optional; weglassen oder `0` für keine Abrundung) |
+| `border` | `BorderValue` | `{ top, right, bottom, left }`, jeweils `{ width, style, color }`, um die Sektion gezeichnet (optional; weglassen für keinen Rahmen) |
 | `wrapper` | `SectionWrapper` | Optionaler äußerer Rahmen — `{ backgroundColor?, padding?, borderRadius? }` — gerendert als `mj-wrapper`-Band um die Sektion |
 
 ## Custom

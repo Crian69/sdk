@@ -5,8 +5,13 @@ export type {
   BlockStyles,
   BlockType,
   BlockVisibility,
+  BorderCorner,
+  BorderRadiusValue,
+  BorderSide,
+  BorderSideValue,
   BorderStyle,
   BorderValue,
+  CornerRadius,
   ButtonBlock,
   ColumnLayout,
   CountdownBlock,
@@ -36,7 +41,12 @@ export type {
 export {
   HEADING_LEVEL_FONT_SIZE,
   RICH_TEXT_SPACING,
+  BORDER_CORNERS,
+  BORDER_SIDES,
   toBorderCss,
+  toBorderDeclarations,
+  toBorderRadiusCss,
+  uniformBorder,
 } from "./blocks";
 
 // Social icon glyphs (shared by the editor's inline SVG + the renderer's PNG rasterizer)

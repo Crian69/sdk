@@ -12,37 +12,147 @@ export interface BlockStyles {
 
 export type BorderStyle = "solid" | "dashed" | "dotted";
 
-/**
- * A uniform border — the same width, style and color on all four sides.
- * Only elements MJML can border natively carry one: sections, images and
- * buttons.
- */
-export interface BorderValue {
-  /** Width in px. `0` means no border. */
+export type BorderSide = "top" | "right" | "bottom" | "left";
+
+export const BORDER_SIDES: readonly BorderSide[] = [
+  "top",
+  "right",
+  "bottom",
+  "left",
+];
+
+/** One side of a border. A width of `0` leaves that side undrawn. */
+export interface BorderSideValue {
+  /** Width in px. `0` means no border on this side. */
   width: number;
   style: BorderStyle;
   color: string;
 }
 
 /**
- * Convert a border to a CSS `border` shorthand like `"1px solid #cccccc"`.
- * Returns `null` when the border is absent or its width is not a positive
- * number, so callers emit nothing rather than a `0px` border.
- *
- * The editor canvas and the renderer both go through this, so the two can't
- * format a border differently.
+ * A border described per side, like `SpacingValue`. Only elements MJML can
+ * border natively carry one: sections, images and buttons.
  */
-export function toBorderCss(border: BorderValue | undefined): string | null {
+export interface BorderValue {
+  top: BorderSideValue;
+  right: BorderSideValue;
+  bottom: BorderSideValue;
+  left: BorderSideValue;
+}
+
+/** The same side value on all four sides. */
+export function uniformBorder(side: BorderSideValue): BorderValue {
+  return {
+    top: { ...side },
+    right: { ...side },
+    bottom: { ...side },
+    left: { ...side },
+  };
+}
+
+/**
+ * Convert one side of a border to a CSS `border` value like
+ * `"1px solid #cccccc"`. Returns `null` when the side is absent or its width is
+ * not a positive number, so callers emit nothing rather than a `0px` border.
+ */
+export function toBorderCss(side: BorderSideValue | undefined): string | null {
   if (
-    !border ||
-    typeof border.width !== "number" ||
-    !Number.isFinite(border.width) ||
-    border.width <= 0
+    !side ||
+    typeof side.width !== "number" ||
+    !Number.isFinite(side.width) ||
+    side.width <= 0
   ) {
     return null;
   }
 
-  return `${border.width}px ${border.style} ${border.color}`;
+  return `${side.width}px ${side.style} ${side.color}`;
+}
+
+/**
+ * Resolve a border to the CSS declarations that draw it, keyed by kebab-case
+ * property: one `border` when all four sides are drawn identically, otherwise
+ * one `border-<side>` per drawn side. Empty when there is nothing to draw.
+ *
+ * The keys double as MJML attribute names (`mj-section`, `mj-image` and
+ * `mj-button` accept `border` and every `border-<side>`), so the renderer and
+ * the editor canvas both go through this and can't disagree about a border.
+ */
+export function toBorderDeclarations(
+  border: BorderValue | undefined,
+): Partial<Record<"border" | `border-${BorderSide}`, string>> {
+  if (!border) {
+    return {};
+  }
+
+  const css = BORDER_SIDES.map((side) => toBorderCss(border[side]));
+  if (css[0] !== null && css.every((value) => value === css[0])) {
+    return { border: css[0] };
+  }
+
+  const declarations: Partial<Record<`border-${BorderSide}`, string>> = {};
+  BORDER_SIDES.forEach((side, index) => {
+    const value = css[index];
+    if (value !== null) {
+      declarations[`border-${side}`] = value;
+    }
+  });
+  return declarations;
+}
+
+export type BorderCorner =
+  "topLeft" | "topRight" | "bottomRight" | "bottomLeft";
+
+/** In CSS shorthand order: top-left, top-right, bottom-right, bottom-left. */
+export const BORDER_CORNERS: readonly BorderCorner[] = [
+  "topLeft",
+  "topRight",
+  "bottomRight",
+  "bottomLeft",
+];
+
+/** A radius per corner, in px. */
+export type CornerRadius = Record<BorderCorner, number>;
+
+/**
+ * A corner radius in px: one number for all four corners, or a radius per
+ * corner.
+ */
+export type BorderRadiusValue = number | CornerRadius;
+
+function cornerPx(value: unknown): number {
+  return typeof value === "number" && Number.isFinite(value) && value > 0
+    ? value
+    : 0;
+}
+
+/**
+ * Convert a corner radius to a CSS `border-radius` value: `"8px"` when all
+ * corners match, otherwise the four-value shorthand `"8px 8px 0px 0px"`
+ * (top-left, top-right, bottom-right, bottom-left). Returns `null` when every
+ * corner is square, so callers emit nothing.
+ *
+ * A non-finite or negative corner counts as square — hand-authored JSON is the
+ * only way to produce one, and the export must not carry it.
+ */
+export function toBorderRadiusCss(
+  radius: BorderRadiusValue | undefined,
+): string | null {
+  if (radius === undefined || radius === null) {
+    return null;
+  }
+
+  const corners =
+    typeof radius === "number"
+      ? BORDER_CORNERS.map(() => cornerPx(radius))
+      : BORDER_CORNERS.map((corner) => cornerPx(radius[corner]));
+
+  if (corners.every((value) => value === 0)) {
+    return null;
+  }
+  if (corners.every((value) => value === corners[0])) {
+    return `${corners[0]}px`;
+  }
+  return corners.map((value) => `${value}px`).join(" ");
 }
 
 export interface BlockVisibility {
@@ -74,8 +184,11 @@ export type ColumnLayout = "1" | "2" | "3" | "2-1" | "1-2";
 export interface SectionWrapper {
   backgroundColor?: string;
   padding?: SpacingValue;
-  /** Corner radius in px for the outer frame. Omitted/0 = square corners. */
-  borderRadius?: number;
+  /**
+   * Corner radius in px for the outer frame — one number, or a radius per
+   * corner. Omitted/0 = square corners.
+   */
+  borderRadius?: BorderRadiusValue;
 }
 
 export interface SectionBlock extends BaseBlock {
@@ -89,9 +202,15 @@ export interface SectionBlock extends BaseBlock {
    * proportionally shrunk to fit.
    */
   stackOnMobile?: boolean;
-  /** Corner radius in px. Omitted/0 = square corners. */
-  borderRadius?: number;
-  /** Border around the section box. Omitted or width 0 = no border. */
+  /**
+   * Corner radius in px — one number, or a radius per corner. Omitted/0 =
+   * square corners.
+   */
+  borderRadius?: BorderRadiusValue;
+  /**
+   * Border around the section box, per side. Omitted = no border; a side with
+   * width 0 is not drawn.
+   */
   border?: BorderValue;
   /** Optional outer frame (rendered as an `mj-wrapper` around the section). */
   wrapper?: SectionWrapper;
@@ -173,10 +292,13 @@ export interface ImageBlock extends BaseBlock {
   /**
    * Corner radius in px. Omitted/0 = square corners. A radius of at least half
    * the rendered size rounds a square image to a circle, which is how avatar
-   * and portrait layouts are built.
+   * and portrait layouts are built. A radius per corner is also accepted.
    */
-  borderRadius?: number;
-  /** Border around the image itself. Omitted or width 0 = no border. */
+  borderRadius?: BorderRadiusValue;
+  /**
+   * Border around the image itself, per side. Omitted = no border; a side with
+   * width 0 is not drawn.
+   */
   border?: BorderValue;
   linkUrl?: string;
   linkOpenInNewTab?: boolean;
@@ -191,10 +313,12 @@ export interface ButtonBlock extends BaseBlock {
   openInNewTab?: boolean;
   backgroundColor: string;
   textColor: string;
-  borderRadius: number;
+  /** Corner radius in px — one number, or a radius per corner. */
+  borderRadius: BorderRadiusValue;
   /**
-   * Border around the button itself. Omitted or width 0 = no border. With a
-   * transparent `backgroundColor` this gives an outline ("ghost") button.
+   * Border around the button itself, per side. Omitted = no border; a side
+   * with width 0 is not drawn. With a transparent `backgroundColor` this gives
+   * an outline ("ghost") button.
    */
   border?: BorderValue;
   fontSize: number;
