@@ -87,12 +87,6 @@ Eine Call-to-Action-Schaltfläche mit anpassbarem Erscheinungsbild.
 | `width` | `number \| 'full'` | Feste Breite in px oder `'full'` für 100%. Weglassen, um an den Inhalt anzupassen. |
 | `align` | `'left' \| 'center' \| 'right'` | Ausrichtung innerhalb der Spalte. Ohne sichtbare Wirkung, wenn `width` auf `'full'` steht. |
 
-::: tip Hinweis zu E-Mail-Clients: Rahmen und Ecken in Outlook
-- Outlook unter Windows ignoriert `border-radius`, auch die Form mit vier Werten (pro Ecke).
-- Gestrichelte und gepunktete Rahmen werden kompiliert, die Rendering-Engine von Outlook zeichnet sie aber oft durchgezogen.
-- Ein Bildrahmen wird am `<img>` gezeichnet, und Outlook lässt ihn oft weg. Rahmen von Sektionen und Schaltflächen sitzen am `<td>`, dem beständigen Ort für einen Rahmen.
-:::
-
 ## Divider
 
 Ein horizontaler Linientrenner.
@@ -247,6 +241,12 @@ Ein Layout-Container, der eine oder mehrere Spalten enthält. Siehe [Sektionen u
 | `borderRadius` | `BorderRadiusValue` | Eckenradius in px oder einer pro Ecke (optional; weglassen oder `0` für keine Abrundung) |
 | `border` | `BorderValue` | `{ top, right, bottom, left }`, jeweils `{ width, style, color }`, um die Sektion gezeichnet (optional; weglassen für keinen Rahmen) |
 | `wrapper` | `SectionWrapper` | Optionaler äußerer Rahmen — `{ backgroundColor?, padding?, borderRadius? }` — gerendert als `mj-wrapper`-Band um die Sektion. Eine vom Host vorgegebene Karte um die Autorensektionen ist ein [Layout](/de/guide/layout)-Overlay. |
+
+::: tip Hinweis zu E-Mail-Clients: Rahmen und Ecken in Outlook
+- Outlook unter Windows ignoriert `border-radius`, auch die Form mit vier Werten (pro Ecke).
+- Gestrichelte und gepunktete Rahmen werden kompiliert, die Rendering-Engine von Outlook zeichnet sie aber oft durchgezogen.
+- Ein Bildrahmen wird am `<img>` gezeichnet, und Outlook lässt ihn oft weg. Rahmen von Sektionen und Schaltflächen sitzen am `<td>`, dem beständigen Ort für einen Rahmen.
+:::
 
 ## Custom
 
