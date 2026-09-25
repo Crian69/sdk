@@ -23,6 +23,7 @@ export type {
   MenuItemData,
   SectionBlock,
   SectionWrapper,
+  SlotBlock,
   SocialIcon,
   SocialIconSize,
   SocialIconStyle,
@@ -37,6 +38,7 @@ export type {
   ParagraphBlock,
   HeadingLevel,
   VideoBlock,
+  WrapperBlock,
 } from "./blocks";
 export {
   HEADING_LEVEL_FONT_SIZE,
@@ -136,12 +138,14 @@ export {
   isImage,
   isMenu,
   isSection,
+  isSlot,
   isSocialIcons,
   isSpacer,
   isTable,
   isTitle,
   isParagraph,
   isVideo,
+  isWrapper,
 } from "./guards";
 
 // Template
@@ -206,14 +210,25 @@ export {
   createImageBlock,
   createMenuBlock,
   createSectionBlock,
+  createSlotBlock,
   createSocialIconsBlock,
   createSpacerBlock,
   createTableBlock,
   createTitleBlock,
   createParagraphBlock,
   createVideoBlock,
+  createWrapperBlock,
   generateId,
 } from "./factory";
+
+// Layout overlay (pure splice of authored content into a slot)
+export {
+  applyLayout,
+  assertNoSlotInContent,
+  assertNoWrapperInContent,
+  layoutWrapsSlot,
+  validateLayout,
+} from "./layout";
 
 // Event emitter
 export { EventEmitter } from "./events";

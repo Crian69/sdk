@@ -240,7 +240,7 @@ Ein Layout-Container, der eine oder mehrere Spalten enthält. Siehe [Sektionen u
 | `stackOnMobile` | `boolean` | Weglassen oder `true`: Spalten stapeln auf Mobilgeräten (MJML-Standard). `false`: nebeneinander (`mj-group`) |
 | `borderRadius` | `BorderRadiusValue` | Eckenradius in px oder einer pro Ecke (optional; weglassen oder `0` für keine Abrundung) |
 | `border` | `BorderValue` | `{ top, right, bottom, left }`, jeweils `{ width, style, color }`, um die Sektion gezeichnet (optional; weglassen für keinen Rahmen) |
-| `wrapper` | `SectionWrapper` | Optionaler äußerer Rahmen — `{ backgroundColor?, padding?, borderRadius? }` — gerendert als `mj-wrapper`-Band um die Sektion |
+| `wrapper` | `SectionWrapper` | Optionaler äußerer Rahmen — `{ backgroundColor?, padding?, borderRadius? }` — gerendert als `mj-wrapper`-Band um die Sektion. Eine vom Host vorgegebene Karte um die Autorensektionen ist ein [Layout](/de/guide/layout)-Overlay. |
 
 ## Custom
 
