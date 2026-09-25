@@ -5,7 +5,11 @@ import type {
   ImageBlock as ImageBlockType,
   ViewportSize,
 } from "@templatical/types";
-import { containsMergeTag, toBorderRadiusCss } from "@templatical/types";
+import {
+  containsMergeTag,
+  toBorderCss,
+  toBorderRadiusCss,
+} from "@templatical/types";
 import { getBorderStyle } from "../../utils/blockComponentResolver";
 import MergeTagPreviewText from "../MergeTagPreviewText.vue";
 import { Image, Upload, LoaderCircle } from "@lucide/vue";
@@ -81,11 +85,27 @@ const containerStyle = computed(() => ({
   textAlign: props.block.align,
 }));
 
+// MJML sizes a full-width `<img>` to the column minus its left and right
+// borders, so the bordered image still fits the column. Mirror that for
+// `"full"` only: a fixed pixel width already matches the export, and a blanket
+// `box-sizing: border-box` would also shrink an explicit height relative to
+// the email. Only drawn sides count.
+const fullWidth = computed(() => {
+  const border = props.block.border;
+  const horizontal = (["left", "right"] as const)
+    .map((side) =>
+      toBorderCss(border?.[side]) === null ? 0 : border![side].width,
+    )
+    .reduce((a, b) => a + b, 0);
+  return horizontal > 0 ? `calc(100% - ${horizontal}px)` : "100%";
+});
+
 const imageStyle = computed(() => {
   const align = props.block.align;
   return {
     maxWidth: "100%",
-    width: props.block.width === "full" ? "100%" : `${props.block.width}px`,
+    width:
+      props.block.width === "full" ? fullWidth.value : `${props.block.width}px`,
     // No object-fit: email clients don't support it, so a stored height has to
     // stretch here exactly as it will in the recipient's inbox.
     height: props.block.height ? `${props.block.height}px` : undefined,

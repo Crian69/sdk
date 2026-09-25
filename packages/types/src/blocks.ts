@@ -317,8 +317,9 @@ export interface ButtonBlock extends BaseBlock {
   borderRadius: BorderRadiusValue;
   /**
    * Border around the button itself, per side. Omitted = no border; a side
-   * with width 0 is not drawn. With a transparent `backgroundColor` this gives
-   * an outline ("ghost") button.
+   * with width 0 is not drawn. For an outline ("ghost") button, set
+   * `backgroundColor` to the keyword `"transparent"` and set `textColor` too —
+   * a new button is `#333333` with white text.
    */
   border?: BorderValue;
   fontSize: number;

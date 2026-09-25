@@ -79,13 +79,19 @@ A call-to-action button with customizable appearance.
 | `backgroundColor` | `string` | Button background color |
 | `textColor` | `string` | Button text color |
 | `borderRadius` | `BorderRadiusValue` | Corner radius in px, or one per corner |
-| `border` | `BorderValue` | `{ top, right, bottom, left }`, each `{ width, style, color }`, drawn around the button (optional). Pair with a transparent background for an outline button |
+| `border` | `BorderValue` | `{ top, right, bottom, left }`, each `{ width, style, color }`, drawn around the button (optional). For an outline button, set `backgroundColor` to the keyword `"transparent"` in the template JSON, and set `textColor` too: a new button is `#333333` with white text |
 | `fontSize` | `number` | Font size in px |
 | `buttonPadding` | `SpacingValue` | Inner padding |
 | `fontFamily` | `string` | Font family override |
 | `openInNewTab` | `boolean` | Link target behavior |
 | `width` | `number \| 'full'` | Fixed width in px, or `'full'` for 100%. Omit to size to content. |
 | `align` | `'left' \| 'center' \| 'right'` | Placement within the column. No visible effect when `width` is `'full'`. |
+
+::: tip Email client note: borders and corners in Outlook
+- Outlook on Windows ignores `border-radius`, including the four-value (per-corner) form.
+- Dashed and dotted borders compile, and Outlook's rendering engine often paints them solid.
+- An image border is drawn on the `<img>`, and Outlook often drops it. Section and button borders sit on the `<td>`, which is the durable place for a border.
+:::
 
 ## Divider
 

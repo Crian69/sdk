@@ -139,25 +139,23 @@ function updateCustomWidth(raw: string): void {
     testid-prefix="button"
     @update:model-value="updateField('borderRadius', $event)"
   />
-  <div class="tpl:grid tpl:grid-cols-2 tpl:gap-3">
-    <div class="tpl:mb-3.5">
-      <label :class="labelClass">{{ t.button.fontSize }}</label>
-      <div class="tpl:flex tpl:items-stretch">
-        <input
-          type="number"
-          :class="inputGroupInputClass"
-          :value="block.fontSize"
-          min="10"
-          max="36"
-          @input="
-            updateField(
-              'fontSize',
-              Number(($event.target as HTMLInputElement).value),
-            )
-          "
-        />
-        <span :class="inputSuffixClass">px</span>
-      </div>
+  <div class="tpl:mb-3.5">
+    <label :class="labelClass">{{ t.button.fontSize }}</label>
+    <div class="tpl:flex tpl:items-stretch">
+      <input
+        type="number"
+        :class="inputGroupInputClass"
+        :value="block.fontSize"
+        min="10"
+        max="36"
+        @input="
+          updateField(
+            'fontSize',
+            Number(($event.target as HTMLInputElement).value),
+          )
+        "
+      />
+      <span :class="inputSuffixClass">px</span>
     </div>
   </div>
   <div class="tpl:mb-3.5">

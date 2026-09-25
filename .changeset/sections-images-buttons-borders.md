@@ -19,4 +19,6 @@ The editor's section, image and button settings get a border control and a radiu
 
 `toBorderCss()`, `toBorderDeclarations()`, `toBorderRadiusCss()` and `uniformBorder()` are exported from `@templatical/types`, so the editor canvas and the renderer draw borders and radii identically.
 
-Other block types (text, menu, social, video) have no native MJML border and are not covered. Outlook on Windows ignores `border-radius`, as before.
+For an outline button, set `backgroundColor` to the keyword `"transparent"` and set `textColor` too.
+
+Other block types (text, menu, social, video) have no native MJML border and are not covered. Outlook on Windows ignores `border-radius` (including the per-corner form) and often paints dashed or dotted borders solid; image borders sit on the `<img>`, which Outlook often drops, while section and button borders sit on the `<td>`.

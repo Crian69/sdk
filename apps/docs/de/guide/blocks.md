@@ -79,13 +79,19 @@ Eine Call-to-Action-Schaltfläche mit anpassbarem Erscheinungsbild.
 | `backgroundColor` | `string` | Hintergrundfarbe der Schaltfläche |
 | `textColor` | `string` | Textfarbe der Schaltfläche |
 | `borderRadius` | `BorderRadiusValue` | Eckenradius in px oder einer pro Ecke |
-| `border` | `BorderValue` | `{ top, right, bottom, left }`, jeweils `{ width, style, color }`, um die Schaltfläche gezeichnet (optional). Mit transparentem Hintergrund entsteht eine Outline-Schaltfläche |
+| `border` | `BorderValue` | `{ top, right, bottom, left }`, jeweils `{ width, style, color }`, um die Schaltfläche gezeichnet (optional). Für eine Outline-Schaltfläche `backgroundColor` im Template-JSON auf das Schlüsselwort `"transparent"` setzen und auch `textColor` setzen: Eine neue Schaltfläche ist `#333333` mit weißem Text |
 | `fontSize` | `number` | Schriftgröße in px |
 | `buttonPadding` | `SpacingValue` | Innerer Abstand |
 | `fontFamily` | `string` | Überschreibung der Schriftfamilie |
 | `openInNewTab` | `boolean` | Verhalten des Linkziels |
 | `width` | `number \| 'full'` | Feste Breite in px oder `'full'` für 100%. Weglassen, um an den Inhalt anzupassen. |
 | `align` | `'left' \| 'center' \| 'right'` | Ausrichtung innerhalb der Spalte. Ohne sichtbare Wirkung, wenn `width` auf `'full'` steht. |
+
+::: tip Hinweis zu E-Mail-Clients: Rahmen und Ecken in Outlook
+- Outlook unter Windows ignoriert `border-radius`, auch die Form mit vier Werten (pro Ecke).
+- Gestrichelte und gepunktete Rahmen werden kompiliert, die Rendering-Engine von Outlook zeichnet sie aber oft durchgezogen.
+- Ein Bildrahmen wird am `<img>` gezeichnet, und Outlook lässt ihn oft weg. Rahmen von Sektionen und Schaltflächen sitzen am `<td>`, dem beständigen Ort für einen Rahmen.
+:::
 
 ## Divider
 

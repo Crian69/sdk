@@ -301,6 +301,59 @@ describe("ImageBlock border", () => {
     ).toBe("12px 12px 0px 0px");
   });
 
+  // MJML narrows a full-width <img> by its left and right borders, so a
+  // bordered full-width image still fits its column in the email.
+  it("narrows a full-width img by its drawn left and right borders", () => {
+    const none = { width: 0, style: "solid" as const, color: "#000000" };
+    const wrapper = mountImage(
+      createImageBlock({
+        src: "https://picsum.photos/400/400",
+        width: "full",
+        border: {
+          top: { width: 9, style: "solid", color: "#000000" },
+          right: { width: 4, style: "solid", color: "#000000" },
+          bottom: none,
+          left: { width: 3, style: "dashed", color: "#000000" },
+        },
+      }),
+    );
+    expect((wrapper.find("img").element as HTMLElement).style.width).toBe(
+      "calc(100% - 7px)",
+    );
+  });
+
+  it("keeps a full-width img at 100% with no side borders drawn", () => {
+    const none = { width: 0, style: "solid" as const, color: "#000000" };
+    const wrapper = mountImage(
+      createImageBlock({
+        src: "https://picsum.photos/400/400",
+        width: "full",
+        border: {
+          top: { width: 4, style: "solid", color: "#000000" },
+          right: none,
+          bottom: { width: 4, style: "solid", color: "#000000" },
+          left: none,
+        },
+      }),
+    );
+    expect((wrapper.find("img").element as HTMLElement).style.width).toBe(
+      "100%",
+    );
+  });
+
+  it("leaves a fixed-width img at its stored width", () => {
+    const wrapper = mountImage(
+      createImageBlock({
+        src: "https://picsum.photos/400/400",
+        width: 240,
+        border: uniformBorder({ width: 4, style: "solid", color: "#000000" }),
+      }),
+    );
+    expect((wrapper.find("img").element as HTMLElement).style.width).toBe(
+      "240px",
+    );
+  });
+
   it("leaves the img border unset for no border or a 0 width", () => {
     for (const border of [
       undefined,

@@ -186,7 +186,9 @@ underline: bool, color?: hex }`.
   bottomLeft }` for a radius per corner.
 - `border` — `{ top, right, bottom, left }`, each side `{ width, style, color }`
   (`0` width leaves a side undrawn), drawn around the button. With a
-  `backgroundColor` of `"transparent"` it makes an outline (ghost) button.
+  `backgroundColor` of `"transparent"` (the keyword; `""` and `"none"` don't
+  work) it makes an outline (ghost) button — set `textColor` too, since a new
+  button is `#333333` with white text.
 - `style` (inside each `border` side) is one of `"solid"`, `"dashed"`, `"dotted"`.
 - `align` places the button within its column; no visible effect when `width` is
   `"full"`.
